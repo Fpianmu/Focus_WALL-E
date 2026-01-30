@@ -14,7 +14,6 @@ typedef struct
 	int16_t output_value;
 	uint8_t work_status;
 } PID_TypeDef ;
-void Timer1_Init(void);
 void PID_Init(float kp,float ki,float kd);
 void PID_Work(uint8_t status);
 int16_t PID_Control(int16_t dis);

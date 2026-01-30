@@ -38,6 +38,9 @@ extern const uint8_t heart[];
 extern const uint8_t heart_broken[];
 extern const uint8_t cry[];
 extern const uint8_t happy[];
+extern const uint8_t rock[];
+extern const uint8_t paper[];
+extern const uint8_t scissors[];
 
 #endif
 

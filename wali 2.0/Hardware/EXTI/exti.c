@@ -119,6 +119,7 @@ void Gesture_Process_Handler(void)
                 case GES_RIGHT:
 										OLED_Clear();
 										OLED_ShowString(2,1,"RIGHT",OLED_8X16);
+										OLED_Update();
 										Right(Speed);
 										Delay_ms(wait_second);
 										Move(0);
@@ -126,6 +127,7 @@ void Gesture_Process_Handler(void)
                 case GES_LEFT:
 										OLED_Clear();
 										OLED_ShowString(2,1,"LEFT",OLED_8X16);
+										OLED_Update();
 										Left(Speed);
 										Delay_ms(wait_second);
 										Move(0);
@@ -133,6 +135,7 @@ void Gesture_Process_Handler(void)
                 case GES_UP:
 										OLED_Clear();
 										OLED_ShowString(2,1,"UP",OLED_8X16);
+										OLED_Update();
 										Move(Speed);
 										Delay_ms(wait_second);
 										Move(0);
@@ -140,6 +143,7 @@ void Gesture_Process_Handler(void)
                 case GES_DOWN:
 										OLED_Clear();
 										OLED_ShowString(2,1,"DOWN",OLED_8X16);
+										OLED_Update();
 										Move(-Speed);
 										Delay_ms(wait_second);
 										Move(0);
@@ -147,16 +151,19 @@ void Gesture_Process_Handler(void)
                 case GES_FORWARD:
 										OLED_Clear();
 										OLED_ShowString(2,1,"FORWARD",OLED_8X16);
+										OLED_Update();
 										Move(0);
 										break;
                 case GES_BACKWARD:
 										OLED_Clear();
 										OLED_ShowString(2,1,"BACKWARD",OLED_8X16);
+										OLED_Update();
 										Move(0);
 										break;
                 case GES_CLOCKWISE:
 										OLED_Clear();
 										OLED_ShowString(2,1,"CLOCKWISE",OLED_8X16);
+										OLED_Update();
 										rotate(Speed);
 										Delay_ms(wait_second);
 										Move(0);
@@ -164,6 +171,7 @@ void Gesture_Process_Handler(void)
                 case GES_ANTI_CLOCKWISE:
 										OLED_Clear();
 										OLED_ShowString(2,1,"ANTI_CLOCKWISE",OLED_8X16);
+										OLED_Update();
 										rotate(-Speed);
 										Delay_ms(wait_second);
 										Move(0);
@@ -171,6 +179,7 @@ void Gesture_Process_Handler(void)
                 case GES_WAVE:
 										OLED_Clear();
 										OLED_ShowString(2,1,"WAVE",OLED_8X16);
+										OLED_Update();
 										Move(0);
 										break;
                 default:

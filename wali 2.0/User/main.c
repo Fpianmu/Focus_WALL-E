@@ -62,11 +62,12 @@ void System_Init(void)
     
 }
 
-/**
-  * @brief  主函数
-  * @param  无
-  * @retval 无
-  */
+/*
+瓦力机器人采用语音交互的形式编写，根据用户命令实时反馈，
+在各种语音交互中，请确保为瓦力留足时间接取处理命令，确保环境安静命令清晰
+*/
+
+
 int main(void)
 {
     // 系统初始化
@@ -77,38 +78,38 @@ int main(void)
 	GS_Write_Byte(0x41, 0xFF);//将0x41寄存器置0 使能手势识别模块
     while(1)
     {
-		while (!Serial_GetRxFlag());
+		while (!Serial_GetRxFlag());  //程序多采用while堵塞来确保接受命令和处理命令
 		if (Serial_RxPacket[1] == 0x00 && Serial_RxPacket[2] == 0x00)
 		{
-		while (!Serial_GetRxFlag());
-		if (Serial_RxPacket[1] == 0x02 && Serial_RxPacket[2] == 0x00)
-		{
-			//剪刀石头布
-			judge1();
-		}
-		if (Serial_RxPacket[1] == 0x03 && Serial_RxPacket[2] == 0x00)
-		{
-			//萝卜纸巾大开门模式
-			judge2();
-		}
-		if (Serial_RxPacket[1] == 0x04 && Serial_RxPacket[2] == 0x00)
-		{
-			while(!Serial_GetRxFlag())
+			while (!Serial_GetRxFlag());
+			if (Serial_RxPacket[1] == 0x02 && Serial_RxPacket[2] == 0x00)
 			{
-				//手势识别	
-				Gesture_Process_Handler();
+				//剪刀石头布
+				judge1();
 			}
-		}
-		if (Serial_RxPacket[1] == 0x05 && Serial_RxPacket[2] == 0x00)
-		{
-			while(!Serial_GetRxFlag())
+			if (Serial_RxPacket[1] == 0x03 && Serial_RxPacket[2] == 0x00)
 			{
-				//跟随模式
-				PID_Follow();
+				//萝卜纸巾大开门模式
+				judge2();
 			}
-			Move(0);
-		}
-		Delay_ms(20);
+			if (Serial_RxPacket[1] == 0x04 && Serial_RxPacket[2] == 0x00)
+			{
+				while(!Serial_GetRxFlag())
+				{
+					//手势识别	
+					Gesture_Process_Handler();
+				}
+			}
+			if (Serial_RxPacket[1] == 0x05 && Serial_RxPacket[2] == 0x00)
+			{
+				while(!Serial_GetRxFlag())
+				{
+					//跟随模式
+					PID_Follow();
+				}
+				Move(0);//听到其他命令后立即停止跟随，停止运动
+			}
+			Delay_ms(20);
 	}
 }
 }
@@ -116,13 +117,14 @@ int main(void)
 
 void judge1()
 {
-	OLED_ShowImage(0,0,128,64,Smile);
+	OLED_ShowImage(0,0,128,64,Smile);  //UI反馈
 	OLED_Update();
 	while (!Serial_GetRxFlag());
+	//在收到退出石头剪刀布模式之前一直进行该游戏
 	while(Serial_RxPacket[1] != 0x02 || Serial_RxPacket[2] != 0x0A)
 	{
 			OLED_Clear();
-			//读取用户所出结果，瓦力随机给出自己所出结果
+			//读取用户所出结果
 			if (Serial_RxPacket[1] == 0x02 && Serial_RxPacket[2] == 0x01)
 			{
 				guess_gesture = 1; //剪刀
@@ -135,6 +137,7 @@ void judge1()
 			{
 				guess_gesture = 3; //布
 			}
+			//瓦力随机给出自己所出结果
 			int rob = get_random();
 			switch(rob)
 			{
@@ -142,22 +145,28 @@ void judge1()
 					Serial_TxPacket[1] = 0x07;
 					Serial_TxPacket[2] = 0x00;
 					Serial_SendPacket();
+					OLED_ShowImage(0,0,128,64,scissors);
+					OLED_Update();
 					break;
 				case 2:
 					Serial_TxPacket[1] = 0x08;
 					Serial_TxPacket[2] = 0x00;
 					Serial_SendPacket();
+					OLED_ShowImage(0,0,128,64,rock);
+					OLED_Update();
 					break;
 				case 3:
 					Serial_TxPacket[1] = 0x09;
 					Serial_TxPacket[2] = 0x00;
 					Serial_SendPacket();
+					OLED_ShowImage(0,0,128,64,paper);
+					OLED_Update();
 					break;
 				default:
 					break;
 			}
+			Delay_ms(1500);  //等待语音助手说完上一句话开始计算
 			//比较双方结果，给出胜负
-			Delay_ms(1500);
 			int win_or_lose = 0;
 			if (rob == guess_gesture)
 			{
@@ -215,6 +224,7 @@ void judge1()
 				Serial_SendPacket();
 				win_or_lose = 1;
 			}
+			//胜负结果结算给予UI反馈
 			OLED_Clear();
 			if (win_or_lose == 1)
 			{
@@ -236,7 +246,7 @@ void judge2(void)
 {
 			int cnt = 1;
 			while (!Serial_GetRxFlag()) ;
-			Servo_SetAngle(90);
+			Servo_SetAngle(90);//自动回正
 			while(Serial_RxPacket[1] != 0x03 || Serial_RxPacket[2] != 0x03)
 			{
 				//当接收到“真棒”指令之前，在萝卜，纸巾之间随机选择，直到选对为止
@@ -247,6 +257,7 @@ void judge2(void)
 					OLED_Update();
 					Delay_s(1);
 					OLED_Clear();
+					//识物模式表现为摆头偏转舵机
 					if (reaction == 1)
 					{
 						Servo_SetAngle(45);
