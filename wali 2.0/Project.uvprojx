@@ -780,6 +780,16 @@
               <FileType>5</FileType>
               <FilePath>.\System\usart.h</FilePath>
             </File>
+            <File>
+              <FileName>Function.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\System\Function.c</FilePath>
+            </File>
+            <File>
+              <FileName>Function.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\System\Function.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
