@@ -9,11 +9,7 @@
 volatile uint8_t gesture_detected_flag = 0;
 volatile uint32_t gesture_detected_time = 0;
 
-/**
-  * @brief  外部中断配置（PB5作为INT_N引脚）
-  * @param  无
-  * @retval 无
-  */
+
 void EXTI_Config(void)
 {
     GPIO_InitTypeDef GPIO_InitStructure;
@@ -51,31 +47,19 @@ void EXTI_Config(void)
     //printf("External Interrupt (PB5) Configured Successfully!\r\n");
 }
 
-/**
-  * @brief  获取手势检测标志
-  * @param  无
-  * @retval 手势检测标志
-  */
+
 uint8_t EXTI_GetGestureFlag(void)
 {
     return gesture_detected_flag;
 }
 
-/**
-  * @brief  清除手势检测标志
-  * @param  无
-  * @retval 无
-  */
+
 void EXTI_ClearGestureFlag(void)
 {
     gesture_detected_flag = 0;
 }
 
-/**
-  * @brief  手势处理中断服务函数
-  * @param  无
-  * @retval 无
-  */
+
 void EXTI_Gesture_IRQHandler(void)
 {
     //uint8_t int_flag1 = 0, int_flag2 = 0;
@@ -93,11 +77,7 @@ void EXTI_Gesture_IRQHandler(void)
     }
 }
 
-/**
-  * @brief  手势处理函数（在主循环中调用）
-  * @param  无
-  * @retval 无
-  */
+
 void Gesture_Process_Handler(void)
 {
     int Speed = 80;
@@ -189,11 +169,7 @@ void Gesture_Process_Handler(void)
     }
 }
 
-/**
-  * @brief  EXTI9_5中断服务函数（处理PB5中断）
-  * @param  无
-  * @retval 无
-  */
+
 void EXTI9_5_IRQHandler(void)
 {
     EXTI_Gesture_IRQHandler();

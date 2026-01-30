@@ -38,7 +38,6 @@ void Gesture_Init(void)
 
 	gesture = (GestureData *)malloc(sizeof(GestureData));
 	if(NULL == gesture){
-		//printf("Error: struct \"GESTURE_DATA\" malloc failed\r\n");
 	}
 	memset(gesture, 0, sizeof(GestureData));
 	

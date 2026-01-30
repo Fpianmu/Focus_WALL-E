@@ -13,11 +13,7 @@
 #include "HCSR04.h"
 #include "Function.h"
 
-/**
-  * @brief  系统初始化
-  * @param  无
-  * @retval 无
-  */
+
 void System_Init(void)
 {
 	//串口初始化
